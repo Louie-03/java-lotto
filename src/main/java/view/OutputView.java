@@ -4,6 +4,7 @@ import domain.Lotto;
 import domain.Rank;
 import domain.User;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -46,6 +47,21 @@ public class OutputView {
             System.out.printf(resultMessage, rank.getMatchCount(), rank.getPrice(), count);
         }
         System.out.printf(PROFIT_MESSAGE, user.calculateRateOfReturn());
+    }
+
+    public static List<String> getResult(User user) {
+        List<Rank> ranks = orderByAscRanks();
+        List<String> messages = new ArrayList<>();
+        for (Rank rank : ranks) {
+            int count = user.countRank(rank);
+            String resultMessage = getResultMessage(rank);
+            messages.add(String.format(resultMessage, rank.getMatchCount(), rank.getPrice(), count));
+        }
+        return messages;
+    }
+
+    public static String getTotalRateOfReturn(User user) {
+        return String.format(PROFIT_MESSAGE, user.calculateRateOfReturn());
     }
 
     private static List<Rank> orderByAscRanks() {
