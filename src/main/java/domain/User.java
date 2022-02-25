@@ -8,18 +8,22 @@ public class User {
     private static final int LOTTO_PRICE = 1000;
     private static final String EXCESS_MONEY_ERROR = "금액을 초과하였습니다.";
 
-    private final List<Lotto> lottos = new ArrayList<>();
+    private final List<Lotto> lottos;
     private final List<Rank> ranks = new ArrayList<>();
-    private final int countOfCustom;
     private final int money;
     private int profit;
 
     public User(int money, int countOfCustom) {
-        if (money / LOTTO_PRICE < countOfCustom) {
+        this.money = money;
+        lottos = null;
+    }
+
+    public User(int money, List<Lotto> lottos) {
+        this.lottos = lottos;
+        if (money / LOTTO_PRICE < lottos.size()) {
             throw new IllegalArgumentException(EXCESS_MONEY_ERROR);
         }
         this.money = money;
-        this.countOfCustom = countOfCustom;
     }
 
     public void buyLotto(Lotto lotto) {
@@ -51,10 +55,10 @@ public class User {
     }
 
     public int getCountOfCustom() {
-        return countOfCustom;
+        return lottos.size();
     }
 
     public int getCountOfAuto() {
-        return money / LOTTO_PRICE - countOfCustom;
+        return money / LOTTO_PRICE - lottos.size();
     }
 }
